@@ -14,7 +14,7 @@ var (
 )
 
 func (p *PathwarAPI) run() {
-	p.r.Run(":8080")
+	p.r.Run(p.cfg.ListenOn)
 }
 
 func (p *PathwarAPI) init() error {

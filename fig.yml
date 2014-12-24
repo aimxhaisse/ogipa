@@ -7,6 +7,5 @@ api:
   build: .
   links:
     - rethinkdb
-  command: /bin/sh -c 'cd /app && ./ogipa -c ogipa.json'
   expose:
     - "80"
