@@ -18,6 +18,3 @@ RUN apt-get update
 RUN apt-get install -q -y golang git
 RUN go get github.com/gin-gonic/gin
 RUN ( cd /src && go build -o /app/ogipa )
-
-
-CMD (cd /app && ./ogipa -c ogipa.json )
