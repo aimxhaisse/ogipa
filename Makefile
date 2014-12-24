@@ -1,6 +1,6 @@
 all: bin bin/ogipa
 
-bin/ogipa:
+bin/ogipa: $(wildcard src/*.go)
 	cd src && go build -p $(shell nproc) -o ../$@
 
 bin:
