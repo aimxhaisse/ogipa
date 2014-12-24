@@ -11,7 +11,7 @@ bin:
 
 clean:
 	gofmt -w src/*.go
-	rm -f bin/ogipo
+	rm -f bin/ogipa
 
 
 re: clean all
