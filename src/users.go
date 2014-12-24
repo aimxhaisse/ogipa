@@ -10,13 +10,14 @@ type UserJSON struct {
 	Login string `json:"user" binding:"required"`
 }
 
-var users []UserJSON
-
 func (p *PathwarAPI) usersList(c *gin.Context) error {
 	type ResponseListUsers struct {
 		Response            // stuff common to all responses
 		Users    []UserJSON // list of users
 	}
+
+	users := make([]UserJSON, 0)
+	users = append(users, UserJSON{"m1ch3l"})
 
 	rsp := ResponseListUsers{
 		Response{RC_OK},

@@ -7,6 +7,7 @@ bin:
 	mkdir -p bin
 
 clean:
+	gofmt -w src/*.go
 	rm -f bin/ogipo
 
 re: clean all

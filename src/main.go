@@ -3,63 +3,52 @@ package main
 // Skeleton to build HTTP/JSON APIs
 
 import (
+	"flag"
 	"github.com/gin-gonic/gin"
 	"log"
 )
 
-// Main structure of the API
-type PathwarAPI struct {
-	r *gin.Engine // Gin's engine
-}
-
-// ReturnCode of an API request
-type ReturnCode int
-
-const (
-	RC_OK             ReturnCode = iota // OK
-	RC_INTERNAL_ERROR                   // KO
+// Flag settings
+var (
+	configFile = flag.String("c", "", "path to the configuration file (e.g, config.json)")
 )
-
-// Response of our API
-type Response struct {
-	RC ReturnCode
-}
-
-// Common stuff
 
 func (p *PathwarAPI) run() {
 	p.r.Run(":8080")
 }
 
 func (p *PathwarAPI) init() error {
-	users = make([]UserJSON, 0)
-
-	users = append(users, UserJSON{"m1ch3l"})
-
 	// users API
 	users := p.r.Group("/users")
 	{
-		// tout ce qui est /users
-		// donc là /users/list
 		users.GET("/list", func(c *gin.Context) {
 			go p.usersList(c)
 		})
 	}
 
-	// add your own resource
+	// add your own resources
 
 	return nil
 }
 
-func NewPathwarAPI() *PathwarAPI {
+func NewPathwarAPI(cfg_path string) (*PathwarAPI, error) {
+	cfg, err := NewConfig(cfg_path)
+	if err != nil {
+		return nil, err
+	}
 	return &PathwarAPI{
 		gin.Default(),
-	}
+		cfg,
+	}, nil
 }
 
 func main() {
-	app := NewPathwarAPI()
-	err := app.init()
+	flag.Parse()
+	app, err := NewPathwarAPI(*configFile)
+	if err != nil {
+		log.Fatalf("failed to init PathwarAPI: %v", err)
+	}
+	err = app.init()
 	if err != nil {
 		log.Fatalf("failed to init PathwarAPI: %v", err)
 	}
