@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -8,6 +9,10 @@ import (
 
 type UserJSON struct {
 	Login string `json:"user" binding:"required"`
+}
+
+func (p *PathwarAPI) usersNew(c *gin.Context) error {
+	return errors.New("Not implemented")
 }
 
 func (p *PathwarAPI) usersList(c *gin.Context) error {

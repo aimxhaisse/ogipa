@@ -18,12 +18,24 @@ func (p *PathwarAPI) run() {
 }
 
 func (p *PathwarAPI) init() error {
+
+	// wrapper around handlers that returns an internal error upon failure
+	type APIHandler func(*PathwarAPI, *gin.Context) error
+	handlerWrapper := func(h APIHandler) func(*gin.Context) {
+		return func(c *gin.Context) {
+			err := h(p, c)
+			if err != nil {
+				rsp := Response{RC_INTERNAL_ERROR}
+				c.JSON(500, rsp)
+			}
+		}
+	}
+
 	// users API
 	users := p.r.Group("/users")
 	{
-		users.GET("/list", func(c *gin.Context) {
-			go p.usersList(c)
-		})
+		users.GET("/list", handlerWrapper((*PathwarAPI).usersList))
+		users.PUT("/new", handlerWrapper((*PathwarAPI).usersNew))
 	}
 
 	// add your own resources
