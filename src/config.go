@@ -7,6 +7,12 @@ import (
 
 type Config struct {
 	ListenOn string // Interface to listen on
+	Rethink  ConfigRethink
+}
+
+type ConfigRethink struct {
+	Address  string
+	Database string
 }
 
 // NewConfig returns a configuration from file pointer by path

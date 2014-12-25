@@ -1,16 +1,13 @@
 package main
 
-import (
-	"github.com/gin-gonic/gin"
-)
+// - Basic Types
 
-// Main structure of the API
-type PathwarAPI struct {
-	r   *gin.Engine // Gin's engine
-	cfg *Config     // App's config
+type User struct {
+	Login string `json:"user" binding:"required"`
 }
 
-// ReturnCode of an API request
+// - API sugar
+
 type ReturnCode int
 
 const (
@@ -18,7 +15,11 @@ const (
 	RC_INTERNAL_ERROR                   // KO
 )
 
-// Response of our API
 type Response struct {
 	RC ReturnCode
+}
+
+type ResponseUsersList struct {
+	Response
+	Users []User
 }

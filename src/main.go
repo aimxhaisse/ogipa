@@ -4,6 +4,7 @@ package main
 
 import (
 	"flag"
+	"github.com/dancannon/gorethink"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -13,11 +14,28 @@ var (
 	configFile = flag.String("c", "", "path to the configuration file (e.g, config.json)")
 )
 
+// Main structure of the API
+type PathwarAPI struct {
+	www *gin.Engine        // Gin's engine
+	db  *gorethink.Session // Rethinkdb's engine
+	cfg *Config            // App's config
+}
+
 func (p *PathwarAPI) run() {
-	p.r.Run(p.cfg.ListenOn)
+	p.www.Run(p.cfg.ListenOn)
 }
 
 func (p *PathwarAPI) init() error {
+	p.www = gin.Default()
+
+	var err error
+	p.db, err = gorethink.Connect(gorethink.ConnectOpts{
+		Address:  p.cfg.Rethink.Address,
+		Database: p.cfg.Rethink.Database,
+	})
+	if err != nil {
+		return err
+	}
 
 	// wrapper around handlers that returns an internal error upon failure
 	type APIHandler func(*PathwarAPI, *gin.Context) error
@@ -32,13 +50,11 @@ func (p *PathwarAPI) init() error {
 	}
 
 	// users API
-	users := p.r.Group("/users")
+	users := p.www.Group("/users")
 	{
 		users.GET("/list", handlerWrapper((*PathwarAPI).usersList))
 		users.PUT("/new", handlerWrapper((*PathwarAPI).usersNew))
 	}
-
-	// add your own resources
 
 	return nil
 }
@@ -49,7 +65,8 @@ func NewPathwarAPI(cfg_path string) (*PathwarAPI, error) {
 		return nil, err
 	}
 	return &PathwarAPI{
-		gin.Default(),
+		nil,
+		nil,
 		cfg,
 	}, nil
 }

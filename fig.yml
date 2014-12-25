@@ -8,4 +8,4 @@ api:
   links:
     - rethinkdb
   expose:
-    - "80"
+    - "20042"
