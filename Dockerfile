@@ -12,13 +12,13 @@ RUN mkdir /go
 ENV GOPATH /go
 
 
-ADD bin /app
 RUN apt-get update
 RUN apt-get install -q -y golang git mercurial
 RUN go get github.com/gin-gonic/gin
 RUN go get github.com/dancannon/gorethink
 ADD src /src
 RUN ( cd /src && go build -o /app/ogipa )
+ADD bin /app
 
 
 CMD (cd /app && ./ogipa -c ogipa.json )
