@@ -2,6 +2,6 @@
     "ListenOn": ":4242",
     "Rethink": {
 	"Address": "localhost:8080",
-	"Database": "Pathwar",
+	"Database": "Pathwar"
     }
 }
