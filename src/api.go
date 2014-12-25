@@ -13,6 +13,7 @@ type ReturnCode int
 const (
 	RC_OK             ReturnCode = iota // OK
 	RC_INTERNAL_ERROR                   // KO
+	RC_INVALID_PARAMS
 )
 
 type Response struct {

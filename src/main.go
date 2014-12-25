@@ -46,6 +46,7 @@ func (p *PathwarAPI) init() error {
 			if err != nil {
 				rsp := Response{RC_INTERNAL_ERROR}
 				c.JSON(500, rsp)
+				log.Printf("internal error: %v", err)
 			}
 		}
 	}
