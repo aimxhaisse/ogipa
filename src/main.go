@@ -23,6 +23,7 @@ type PathwarAPI struct {
 
 func (p *PathwarAPI) run() {
 	p.www.Run(p.cfg.ListenOn)
+	log.Fatalf("error: can't listen on %s", p.cfg.ListenOn)
 }
 
 func (p *PathwarAPI) init() error {

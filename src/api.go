@@ -3,7 +3,7 @@ package main
 // - Basic Types
 
 type User struct {
-	Login string `json:"user" binding:"required"`
+	Login string
 }
 
 // - API sugar
