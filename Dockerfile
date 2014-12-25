@@ -8,7 +8,7 @@ MAINTAINER s. rannou <mxs@sbrk.org>
 
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN mkdir /go
+RUN mkdir /go /app
 ENV GOPATH /go
 
 
@@ -18,7 +18,7 @@ RUN go get github.com/gin-gonic/gin
 RUN go get github.com/dancannon/gorethink
 ADD src /src
 RUN ( cd /src && go build -o /app/ogipa )
-ADD bin /app
+ADD bin/ogipa.json /app/ogipa.json
 
 
 CMD (cd /app && ./ogipa -c ogipa.json )

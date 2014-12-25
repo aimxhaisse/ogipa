@@ -1,11 +1,11 @@
 rethinkdb:
   image: dockerfile/rethinkdb
   ports:
-    - "8080"
+    - "28015"
 
 api:
   build: .
   links:
     - rethinkdb
   expose:
-    - "20042"
+    - "8080"
