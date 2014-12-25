@@ -26,17 +26,27 @@ func (p *PathwarAPI) run() {
 	log.Fatalf("error: can't listen on %s", p.cfg.ListenOn)
 }
 
+func (p *PathwarAPI) createDbIfNotExists() {
+	defer func () {
+		recover()
+	}()
+
+	gorethink.DbCreate(p.cfg.Rethink.Database).RunWrite(p.db)
+	gorethink.Db(p.cfg.Rethink.Database).TableCreate("users").RunWrite(p.db)
+}
+
 func (p *PathwarAPI) init() error {
 	p.www = gin.Default()
 
 	var err error
 	p.db, err = gorethink.Connect(gorethink.ConnectOpts{
 		Address:  p.cfg.Rethink.Address,
-		Database: p.cfg.Rethink.Database,
 	})
 	if err != nil {
 		return err
 	}
+	p.createDbIfNotExists()
+	p.db.Use(p.cfg.Rethink.Database)
 
 	// wrapper around handlers that returns an internal error upon failure
 	type APIHandler func(*PathwarAPI, *gin.Context) error
